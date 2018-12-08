@@ -8,43 +8,54 @@ type ListNode struct {
 	Next *ListNode
 }
 
-func GetInteger(l *ListNode) int {
-	res := 0
-	curNode := l
-	factor := 1
-	for curNode != nil {
-		res += curNode.Val * factor
-		factor *= 10
-
-		curNode = curNode.Next
-	}
-
-	return res
-}
-
-func Convert(input int) *ListNode {
-	divisor := input
-
+func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	var res *ListNode
 	var lastNode *ListNode
 
-	for ;; {
-		remainder := divisor % 10
-		divisor = divisor / 10
+	lastNodeInL1 := l1
+	lastNodeInL2 := l2
+
+	gt10 := false
+	for lastNodeInL1 != nil || lastNodeInL2 != nil {
+		s := 0
+		if lastNodeInL1 != nil {
+			s += lastNodeInL1.Val
+
+			lastNodeInL1 = lastNodeInL1.Next
+		}
+
+		if lastNodeInL2 != nil {
+			s += lastNodeInL2.Val
+
+			lastNodeInL2 = lastNodeInL2.Next
+		}
+
+		if gt10 {
+			s += 1
+		}
+
+		curNodeValue := 0
+		if s >= 10 {
+			curNodeValue = s - 10
+			gt10 = true
+		} else {
+			curNodeValue = s
+			gt10 = false
+		}
+
 		if res == nil {
-			res = &ListNode{remainder, nil}
+			res = &ListNode{curNodeValue, nil}
 			lastNode = res
 		} else {
-			lastNode.Next = &ListNode{remainder, nil}
+			lastNode.Next = &ListNode{curNodeValue, nil}
 			lastNode = lastNode.Next
 		}
-
-		if divisor == 0 {
-			return res
-		}
 	}
-}
 
-func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	return Convert(GetInteger(l1) + GetInteger(l2))
+	// l1 and l2 have the same length and the sum of last Node larger than 10
+	if gt10 {
+		lastNode.Next = &ListNode{1, nil}
+	}
+
+	return res
 }

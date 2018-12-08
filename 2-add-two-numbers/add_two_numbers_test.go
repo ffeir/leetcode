@@ -5,29 +5,26 @@ import (
 	"testing"
 )
 
-func TestGetInteger(t *testing.T) {
-	l := &ListNode{0, nil}
-	assert.Equal(t, 0, GetInteger(l))
+func GetInteger(l *ListNode) int {
+	res := 0
+	curNode := l
+	factor := 1
+	for curNode != nil {
+		res += curNode.Val * factor
+		factor *= 10
 
-	l.Next = &ListNode{2, nil}
-	assert.Equal(t, 20, GetInteger(l))
+		curNode = curNode.Next
+	}
 
-	l.Next.Next = &ListNode{8, nil}
-	assert.Equal(t, 820, GetInteger(l))
-}
-
-func TestConvert(t *testing.T) {
-	l := &ListNode{0, nil}
-	l.Next = &ListNode{2, nil}
-	l.Next.Next = &ListNode{8, nil}
-
-	assert.Equal(t, 820, GetInteger(Convert(820)))
-	assert.Equal(t, 342, GetInteger(Convert(342)))
-	assert.Equal(t, 465, GetInteger(Convert(465)))
+	return res
 }
 
 func TestAddTwoNumbers(t *testing.T) {
 	l := &ListNode{2, &ListNode{4, &ListNode{3, nil}}}
 	l2 := &ListNode{5, &ListNode{6, &ListNode{4, nil}}}
 	assert.Equal(t, 807, GetInteger(AddTwoNumbers(l, l2)))
+
+	l = &ListNode{5, nil}
+	l2 = &ListNode{5, nil}
+	assert.Equal(t, 10, GetInteger(AddTwoNumbers(l, l2)))
 }
