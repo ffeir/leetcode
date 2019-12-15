@@ -10,14 +10,33 @@ func LongestConsecutiveSequence(arrays []int) int {
 		seqMap[elem] = struct{}{}
 	}
 
+	maxLength := 1
 	for _, elem := range arrays {
 		i := elem
+		length := 1
 		for {
 			i--
 			_, ok := seqMap[i]
 			if !ok {
 				break
 			}
+			length++
+		}
+
+		j := elem
+		for {
+			j++
+			_, ok := seqMap[j]
+			if !ok {
+				break
+			}
+			length++
+		}
+
+		if maxLength < length {
+			maxLength = length
 		}
 	}
+
+	return maxLength
 }
