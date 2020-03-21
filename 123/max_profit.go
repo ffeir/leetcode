@@ -1,34 +1,32 @@
 package _23
 
-import "fmt"
-
 func maxProfit(prices []int) int {
 	if len(prices) == 0 || len(prices) == 1 {
 		return 0
 	}
 
-	max1, max2 := 0, 0
-	tempMax := 0
+	lp1 := 1<<63 - 1 // lowest price in transaction 1
+	m1 := 0          // max profit in transaction 1
+	lp2 := lp1
+	m2 := 0 // max profit in transaction 2
 
-	bI := 0 // buy index
-	for i, v := range prices {
-		if v >= prices[bI] {
-			tempMax += v - prices[bI]
-		} else { // new buy txn
-			if max2 < tempMax {
-				max1 = max2
-				max2 = tempMax
-			}
-			tempMax = 0
-			fmt.Println(max1, max2, tempMax)
-		}
-
-		bI = i
+	for _, v := range prices {
+		lp1 = min(lp1, v)
+		m1 = max(m1, v-lp1)
+		lp2 = min(v)
 	}
+}
 
-	if tempMax > max1 {
-		max1 = tempMax
+func max(a, b int) int {
+	if a > b {
+		return a
 	}
+	return b
+}
 
-	return max1 + max2
+func min(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
 }
